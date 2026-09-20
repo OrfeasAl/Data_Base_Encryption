@@ -1,0 +1,29 @@
+# Python Bytecode & Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+
+# IDE & Editor Settings
+.idea/
+.vscode/
+
+# Local Database
+*.db
+*.sqlite3
+
+# Cryptographic Keys & Certificates (DO NOT commit keys to Git!)
+*.pem
+*.private_key
+*.public_key
+*.crt
+*.key
+
+# OS Generated Files
+Thumbs.db
+.DS_Store
