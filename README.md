@@ -8,11 +8,11 @@ Developed with Python, SQLite, Cryptography (Fernet & RSA-2048 OAEP), and Contai
 
 ##  Key Security Features
 
-- ** Zero-Knowledge Server (Data-at-Rest Protection):** The server stores and manages data, but never possesses the plaintext data nor the symmetric keys required to decrypt it.
-- ** Envelope / Hybrid Encryption:**
+- **Zero-Knowledge Server (Data-at-Rest Protection):** The server stores and manages data, but never possesses the plaintext data nor the symmetric keys required to decrypt it.
+- **Envelope / Hybrid Encryption:**
   - **Data Layer:** High-speed symmetric encryption using **Fernet (AES-128-CBC + HMAC-SHA256)** for database records.
   - **Key Wrapping Layer:** The symmetric Fernet key is wrapped (encrypted) using **RSA-2048 with OAEP (SHA-256)** using the client's public key (and optionally the admin's key).
-- ** Secure Transport (TLS with Certificate Pinning):** Communication between client and server is encrypted in-transit over TLS 1.3/TCP sockets. The client performs **Certificate Pinning** against the server's public key, preventing Man-in-the-Middle (MITM) attacks without requiring a commercial CA.
+- **Secure Transport (TLS with Certificate Pinning):** Communication between client and server is encrypted in-transit over TLS 1.3/TCP sockets. The client performs **Certificate Pinning** against the server's public key, preventing Man-in-the-Middle (MITM) attacks without requiring a commercial CA.
 - **Asymmetric Key Delegation (Secure Mailbox):**
   - Users can securely share access to their records without exposing their private keys or master passwords.
   - User A sends an access request with their RSA public key.
