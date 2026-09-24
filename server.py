@@ -184,6 +184,11 @@ def client_menu(conn, current_user, role):
         conn.send(menu.encode())
         choice = conn.recv(1024).decode().strip()
 
+        # Αν ο Client αποσυνδέθηκε ή έκλεισε τη ροή
+        if not choice:
+            print(f"[SERVER LOG] 👤 Χρήστης: {current_user} | 🚪 Αποσυνδέθηκε.")
+            return
+
         action_names = {
             "1": "Ανάγνωση όλων των επιτρεπτών δεδομένων",
             "2": "Ανάγνωση με βάση το Split Number",
@@ -522,6 +527,8 @@ def handle_client(conn):
 
         client_menu(conn, username, user_role)  # καλει το μενου για να σταλθει στον client
 
+    except (ssl.SSLEOFError, ConnectionResetError, BrokenPipeError):
+        print(f"[SERVER] Ο Client αποσυνδέθηκε.")
     except Exception as e:
         print(f"[SERVER ERROR] {e}")
 
@@ -540,10 +547,15 @@ def start_server():
     print("[SERVER] Αναμονή για σύνδεση στο port 5000...")
 
     while True:
-        conn, addr = server_socket.accept()
-        print(f"[SERVER] Συνδέθηκε ο Client: {addr}\n")
-        thread = threading.Thread(target=handle_client, args=(conn,))
-        thread.start()
+        try:
+            conn, addr = server_socket.accept()
+            print(f"[SERVER] Συνδέθηκε ο Client: {addr}\n")
+            thread = threading.Thread(target=handle_client, args=(conn,))
+            thread.start()
+        except (ssl.SSLError, ssl.SSLEOFError):
+            print("[SERVER] Αποτυχημένο TLS handshake / απότομη αποσύνδεση πριν την ταυτοποίηση.")
+        except Exception as e:
+            print(f"[SERVER ERROR στο accept] {e}")
 
 
 if __name__ == "__main__":
